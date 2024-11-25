@@ -19,9 +19,9 @@ def cek_data():
 def register():
     os.system("cls")
         
-    print("="*40)
-    print("Registrasi Akun".center(40))
-    print("="*40)
+    print("╔" + "═"*38 + "╗")
+    print("║" + "Registrasi Akun".center(38) + "║")
+    print("╚" + "═"*38 + "╝")
         
     print("\n1. Penjual\n2. Pembeli\n3. Kembali\n")
     pilihan = input("Registrasi sebagai : ")
@@ -35,10 +35,10 @@ def register():
         kondisi2 = True
         kondisi3 = True
         
-        print("="*40)
-        print("Registrasi Akun ".center(40))
-        print("Penjual".center(40))
-        print("="*40)
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Registrasi Akun".center(38) + "║")
+        print("║" + "Penjual".center(38) + "║")
+        print("╚" + "═"*38 + "╝")
         print()
         
         while kondisi:
@@ -81,10 +81,10 @@ def register():
         kondisi2 = True
         kondisi3 = True
         
-        print("="*40)
-        print("Registrasi Akun ".center(40))
-        print("Pembeli".center(40))
-        print("="*40)
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Registrasi Akun".center(38) + "║")
+        print("║" + "Pembeli".center(38) + "║")
+        print("╚" + "═"*38 + "╝")
         print()
         
         while kondisi:
@@ -127,9 +127,9 @@ def register():
 def login():
     os.system("cls")
         
-    print("="*40)
-    print("Login Akun".center(40))
-    print("="*40)
+    print("╔" + "═"*38 + "╗")
+    print("║" + "Login Akun".center(38) + "║")
+    print("╚" + "═"*38 + "╝")
         
     print("\n1. Admin\n2. Penjual\n3. Pembeli\n4. Kembali\n")
     pilihan = input("Login sebagai : ")
@@ -141,10 +141,10 @@ def login():
         
         i = 0
         
-        print("=" * 40)
-        print("Login Akun".center(40))
-        print("Penjual".center(40))
-        print("=" * 40)
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Login Akun".center(38) + "║")
+        print("║" + "Admin".center(38) + "║")
+        print("╚" + "═"*38 + "╝")
         
         while i < 3:
             admin["username"] = admin["username"].astype(str)
@@ -168,10 +168,10 @@ def login():
         
         i = 0
         
-        print("=" * 40)
-        print("Login Akun".center(40))
-        print("Penjual".center(40))
-        print("=" * 40)
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Login Akun".center(38) + "║")
+        print("║" + "Penjual".center(38) + "║")
+        print("╚" + "═"*38 + "╝")
         
         while i < 3:
             seller["username"] = seller["username"].astype(str)
@@ -195,10 +195,10 @@ def login():
         
         i = 0
         
-        print("=" * 40)
-        print("Login Akun".center(40))
-        print("Pembeli".center(40))
-        print("=" * 40)
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Login Akun".center(38) + "║")
+        print("║" + "Pembeli".center(38) + "║")
+        print("╚" + "═"*38 + "╝")
         
         while i < 3:
             buyer["username"] = buyer["username"].astype(str)
@@ -255,10 +255,11 @@ def main():
     kondisi = True
     
     while kondisi:
-        print("="*40)
-        print("NANDOER".center(40))
-        print("Pilihan Terpercaya Petani Indonesia".center(40))
-        print("="*40)  
+        print("╔" + "═"*38 + "╗")
+        print("║" + "NANDOER".center(38) + "║")
+        print("╠" + "═"*38 + "╣")
+        print("║" + "Pilihan Terpercaya Petani Indonesia".center(38) + "║")
+        print("╚" + "═"*38 + "╝") 
         print("\n1. Registrasi\n2. Login\n3. Keluar\n")
         
         kondisi2 = True
@@ -288,10 +289,11 @@ def main():
                 kondisi2 = False
             else:
                 os.system("cls")
-                print("="*40)
-                print("NANDOER".center(40))
-                print("Pilihan Terpercaya Petani Indonesia".center(40))
-                print("="*40)  
+                print("╔" + "═"*38 + "╗")
+                print("║" + "NANDOER".center(38) + "║")
+                print("╠" + "═"*38 + "╣")
+                print("║" + "Pilihan Terpercaya Petani Indonesia".center(38) + "║")
+                print("╚" + "═"*38 + "╝") 
                 print("\n1. Registrasi\n2. Login\n3. Keluar\n")
                 print("Input anda tidak sesuai pilihan!")
     
