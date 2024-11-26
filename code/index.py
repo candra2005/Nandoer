@@ -7,10 +7,10 @@ FILE_ADMIN = "data_admin.csv"
 
 def cek_data():
     if not os.path.exists(FILE_BUYER):  
-        user = pd.DataFrame(columns=["username", "password", "telepon"]) 
+        user = pd.DataFrame(columns=["username", "password", "email"]) 
         user.to_csv(FILE_BUYER, index=False) 
     if not os.path.exists(FILE_SELLER):  
-        user = pd.DataFrame(columns=["username", "password", "telepon"]) 
+        user = pd.DataFrame(columns=["username", "password", "email"]) 
         user.to_csv(FILE_SELLER, index=False)
     if not os.path.exists(FILE_ADMIN):  
         user = pd.DataFrame(columns=["username", "password"]) 
@@ -33,7 +33,6 @@ def register():
         
         kondisi = True
         kondisi2 = True
-        kondisi3 = True
         
         print("╔" + "═"*38 + "╗")
         print("║" + "Registrasi Akun".center(38) + "║")
@@ -57,15 +56,9 @@ def register():
             else:
                 kondisi2 = False
         
-        while kondisi3:
-            try:
-                telepon = int(input("Masukkan nomor telepon : "))
+        email = input("Masukkan email : ")
                 
-                kondisi3 = False
-            except:
-                print("Masukan berupa angka!")
-                
-        data_baru = {"username": username, "password": password, "telepon": telepon}
+        data_baru = {"username": username, "password": password, "email": email}
         data_baru_df = pd.DataFrame([data_baru])
         seller = pd.concat([seller, data_baru_df], ignore_index=True)
         seller.to_csv(FILE_SELLER, index=False)    
@@ -105,13 +98,13 @@ def register():
         
         while kondisi3:
             try:
-                telepon = int(input("Masukkan nomor telepon : "))
+                email = int(input("Masukkan nomor email : "))
                 
                 kondisi3 = False
             except:
                 print("Masukan berupa angka!")
                 
-        data_baru = {"username": username, "password": password, "telepon": telepon}
+        data_baru = {"username": username, "password": password, "email": email}
         data_baru_df = pd.DataFrame([data_baru])
         seller = pd.concat([seller, data_baru_df], ignore_index=True)
         seller.to_csv(FILE_BUYER, index=False)    
