@@ -209,37 +209,97 @@ def login():
                 i+=1
     
 def menu_admin(user):
-    os.system('cls')
+    kondisi = True
     
-    print("=" * 40)
-    print("Menu Admin".center(40))
-    print(user.center(40))
-    print("=" * 40)
-    
-    print("\n1. List akun seller\n2. List akun buyer\n3. Total Penjualan\n4. Keluar akun")
-    i = input()
+    while kondisi:
+        os.system('cls')
+        
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Menu Admin".center(38) + "║")
+        print("╠" + "═"*38 + "╣")
+        print("║" + user.center(38) + "║")
+        print("╚" + "═"*38 + "╝")
+        
+        print("\n1. Edit akun seller\n2. Edit akun buyer\n3. Histori penjualan\n4. Total Penjualan\n5. Keluar akun")
+        
+        kondisi2 = True
+        
+        while kondisi2:
+            pilihan = input("\nGunakan menu nomor : ")
+            
+            if pilihan == "1":
+                kondisi2 = False
+            elif pilihan == "2":
+                kondisi2 = False
+            elif pilihan == "3":
+                kondisi2 = False
+            elif pilihan == "4":
+                kondisi2 = False
+            elif pilihan == "5":
+                kondisi2 = False
+                kondisi = False
+            else:
+                print("Masukkan input yang benar!")
     
 def menu_penjual(user):
-    os.system('cls')
+    kondisi = True
     
-    print("=" * 40)
-    print("Menu Penjual".center(40))
-    print(user.center(40))
-    print("=" * 40)
-    
-    print("\n1. Tambah barang\n2. Hasil penjualan\n3. Keluar akun")
-    i = input()
+    while kondisi:
+        os.system('cls')
+        
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Menu Penjual".center(38) + "║")
+        print("╠" + "═"*38 + "╣")
+        print("║" + user.center(38) + "║")
+        print("╚" + "═"*38 + "╝")
+        
+        print("\n1. Edit barang\n2. Histori penjualan\n3. Total penjualan\n4. Keluar akun")
+        
+        kondisi2 = True
+        
+        while kondisi2:
+                pilihan = input("\nGunakan menu nomor : ")
+                
+                if pilihan == "1":
+                    kondisi2 = False
+                elif pilihan == "2":
+                    kondisi2 = False
+                elif pilihan == "3":
+                    kondisi2 = False
+                elif pilihan == "4":
+                    kondisi2 = False
+                    kondisi = False
+                else:
+                    print("Masukkan input yang benar!")
     
 def menu_pembeli(user):
-    os.system('cls')
+    kondisi = True
     
-    print("=" * 40)
-    print("Menu Pembeli".center(40))
-    print(user.center(40))
-    print("=" * 40)
-    
-    print("\n1. Beli barang\n2. Keluar akun")
-    i = input()
+    while kondisi:
+        os.system('cls')
+        
+        print("╔" + "═"*38 + "╗")
+        print("║" + "Menu Pembeli".center(38) + "║")
+        print("╠" + "═"*38 + "╣")
+        print("║" + user.center(38) + "║")
+        print("╚" + "═"*38 + "╝")
+        
+        print("\n1. Beli barang\n2. Histori pembelian\n3. Keluar akun")
+        
+        kondisi2 = True
+            
+        while kondisi2:
+                pilihan = input("\nGunakan menu nomor : ")
+                
+                if pilihan == "1":
+                    kondisi2 = False
+                elif pilihan == "2":
+                    kondisi2 = False
+                elif pilihan == "3":
+                    kondisi2 = False
+                    kondisi = False
+                else:
+                    print("Masukkan input yang benar!")
 
 def main():
     
