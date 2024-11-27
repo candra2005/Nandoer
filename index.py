@@ -83,8 +83,8 @@ def register():
                 
         data_baru = {"username": username, "password": password, "email": email, "role": "seller"}
         data_baru_df = pd.DataFrame([data_baru])
-        seller = pd.concat([seller, data_baru_df])
-        seller.to_csv(FILE_USER)     
+        seller = pd.concat([seller, data_baru_df], ignore_index=True)
+        seller.to_csv(FILE_USER, index=False)     
         
         print(f"\nRegistrasi {username} sebagai penjual telah berhasil") 
         
@@ -124,8 +124,8 @@ def register():
                 
         data_baru = {"username": username, "password": password, "email": email, "role": "buyer"}
         data_baru_df = pd.DataFrame([data_baru])
-        seller = pd.concat([buyer, data_baru_df])
-        seller.to_csv(FILE_USER)    
+        seller = pd.concat([buyer, data_baru_df], ignore_index=True)
+        seller.to_csv(FILE_USER, index=False)    
         
         print(f"\nRegistrasi {username} sebagai penjual telah berhasil") 
         
@@ -282,7 +282,7 @@ def menu_penjual(email):
         print("║" + user.center(48) + "║")
         print("╚" + "═"*48 + "╝")
         
-        print("\n1. Profil akun\n2. Edit barang\n3. Histori penjualan\n4. Total penjualan\n5. Keluar akun")
+        print("\n1. Profil akun\n2. Edit barang\n3. Total penjualan\n4. Keluar akun")
         
         kondisi2 = True
         
@@ -298,8 +298,6 @@ def menu_penjual(email):
                 elif pilihan == "3":
                     kondisi2 = False
                 elif pilihan == "4":
-                    kondisi2 = False
-                elif pilihan == "5":
                     kondisi2 = False
                     kondisi = False
                 else:
@@ -362,11 +360,20 @@ def profil(index):
 
 #FITUR PENJUAL
 def edit_barang_penjual(user):    
-    folder_data = os.path.join(folder_toko, f"toko_{user}.csv")
+    sub_folder = os.path.join(folder_toko, f"toko_{user}")
     
-    if not os.path.exists(f"toko_{user}.csv"):  
+    if not os.path.exists(sub_folder):
+        os.makedirs(sub_folder)
+    
+    barang = os.path.join(sub_folder, f"toko_{user}.csv")
+    histori = os.path.join(sub_folder, f"histori_{user}.csv")
+    
+    if not os.path.exists(barang):  
         user_df = pd.DataFrame(columns=["barang", "harga", "stok"]) 
-        user_df.to_csv(folder_data) 
+        user_df.to_csv(barang, index=False)
+    if not os.path.exists(histori):  
+        user_df = pd.DataFrame(columns=["barang", "terjual"]) 
+        user_df.to_csv(histori, index=False) 
         
     kondisi = True
 
@@ -377,7 +384,7 @@ def edit_barang_penjual(user):
         print("║" + "Edit Barang".center(48) + "║")
         print("╚" + "═"*48 + "╝")
         
-        print("\n1. Tambah jenis barang\n2. Hapus jenis barang\n3. Edit harga\n4. Edit stok barang\n5. Kembali")
+        print("\n1. List barang\n2. Tambah jenis barang\n3. Hapus jenis barang\n4. Edit harga\n5. Edit stok barang\n6. Kembali")
         
         kondisi2 = True
             
@@ -385,21 +392,277 @@ def edit_barang_penjual(user):
                 pilihan = input("\nGunakan menu nomor : ")
                 
                 if pilihan == "1":
+                    list_barang(user)
                     kondisi2 = False
                 elif pilihan == "2":
+                    tambah(user)
                     kondisi2 = False
                 elif pilihan == "3":
+                    hapus(user)
                     kondisi2 = False
                 elif pilihan == "4":
+                    edit_harga(user)
                     kondisi2 = False
                 elif pilihan == "5":
+                    edit_stok(user)
+                    kondisi2 = False
+                elif pilihan == "6":
                     kondisi2 = False
                     kondisi = False
                 else:
                     print("Masukkan input yang benar!")
 
+#FITUR EDIT BARANG
+def list_barang(user):
+    sub_folder = os.path.join(folder_toko, f"toko_{user}")
+    file_barang = os.path.join(sub_folder, f"toko_{user}.csv")
+    
+    baca = pd.read_csv(file_barang)
+    os.system('cls')
+
+    print("╔" + "═"*48 + "╗")
+    print("║" + "List Barang".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if baca.empty:
+        print("Tidak ada barang dalam toko ini!")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("List barang:")
+    for index, row in baca.iterrows():
+        barang = row["barang"]
+        harga = row["harga"]
+        stok = row["stok"]
+        print(f"{index + 1}. {barang} | harga = {harga} | stok = {stok}")
+    
+    i = input("\nTekan enter untuk kembali")
+
+def tambah(user):
+    sub_folder = os.path.join(folder_toko, f"toko_{user}")
+    file_barang = os.path.join(sub_folder, f"toko_{user}.csv")
+    
+    baca = pd.read_csv(file_barang)
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Tambah Jenis Barang".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    kondisi2 = True
+    
+    while kondisi2:
+        barang = input("Masukkan nama barang : ")
+        
+        if barang in baca["barang"].values:
+            print("Barang sudah ada dalam data!")
+        else:
+            kondisi2 = False
+    
+    kondisi3 = True
+    
+    while kondisi3:
+        try:
+            harga = int(input("Masukkan harga barang : "))
+            
+            kondisi3 = False
+        except:
+            print("Masukkan input berupa angka!")
+            
+    kondisi4 = True
+    
+    while kondisi4:
+        try:
+            stok = int(input("Masukkan stok barang : "))
+            
+            kondisi4 = False
+        except:
+            print("Masukkan input berupa angka!")
+            
+    data_baru = {"barang": barang, "harga": harga, "stok": stok}
+    df_barang = pd.concat([baca, pd.DataFrame([data_baru])], ignore_index=True)
+    df_barang.to_csv(file_barang, index=False)
+    
+    print(f"\n{barang} telah ditambahkan dengan harga : {harga} dan stok : {stok}")
+    
+    i = input("\nTekan enter untuk kembali")
+    
+def hapus(user):
+    sub_folder = os.path.join(folder_toko, f"toko_{user}")
+    file_barang = os.path.join(sub_folder, f"toko_{user}.csv")
+    
+    baca = pd.read_csv(file_barang)
+    
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Hapus Barang".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if baca.empty:
+        print("Tidak ada barang dalam toko ini!")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("List barang:")
+    for index, row in baca.iterrows():
+        barang = row["barang"]
+        harga = row["harga"]
+        stok = row["stok"]
+        print(f"{index + 1}. {barang} | harga = {harga} | stok = {stok}")
+        
+    kondisi = True
+    
+    print()
+    
+    while kondisi:
+        try:
+            hapus_item = int(input("Hapus item nomor : "))
+            
+            if 1 <= hapus_item <= len(baca):
+                kondisi = False
+            else:
+                print("Masukkan nomor barang yang sudah ada di atas!")
+        except:
+            print("Masukkan input yang benar!")
+    
+    baca.drop(baca.index[hapus_item - 1], inplace=True)
+    baca.to_csv(file_barang, index=False)
+    
+    print(f"\nBarang urutan {hapus_item} telah dihapus")
+
+    i = input("\nTekan enter untuk kembali")
+    
+def edit_harga(user):
+    sub_folder = os.path.join(folder_toko, f"toko_{user}")
+    file_barang = os.path.join(sub_folder, f"toko_{user}.csv")
+    
+    baca = pd.read_csv(file_barang)
+    
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Edit Harga".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if baca.empty:
+        print("Tidak ada barang dalam toko ini!")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("List barang:")
+    for index, row in baca.iterrows():
+        barang = row["barang"]
+        harga = row["harga"]
+        stok = row["stok"]
+        print(f"{index + 1}. {barang} | harga = {harga} | stok = {stok}")
+        
+    kondisi = True
+    
+    print()
+    
+    while kondisi:
+        try:
+            index_ubah = int(input("Ubah item nomor : "))
+            
+            if 1 <= index_ubah <= len(baca):
+                kondisi = False
+            else:
+                print("Masukkan nomor barang yang sudah ada di atas!")
+        except:
+            print("Masukkan input yang benar!")
+    
+    barang_dipilih = baca.iloc[index_ubah-1]
+    print(f"\nBarang yang dipilih: {barang_dipilih['barang']} | harga saat ini = {barang_dipilih['harga']}\n")
+    
+    kondisi2 = True
+    
+    while kondisi2:
+        try:
+            harga_baru = int(input("Masukkan harga baru : "))
+            
+            kondisi2 = False
+        except:
+            print("Masukkan input berupa angka!")
+            
+    baca.at[index_ubah-1, "harga"] = harga_baru
+    baca.to_csv(file_barang, index=False)
+    
+    print(f"\nHarga barang '{barang_dipilih['barang']}' berhasil diubah menjadi {harga_baru}.")
+    
+    i = input("\nTekan enter untuk kembali")
+    
+def edit_stok(user):
+    sub_folder = os.path.join(folder_toko, f"toko_{user}")
+    file_barang = os.path.join(sub_folder, f"toko_{user}.csv")
+    
+    baca = pd.read_csv(file_barang)
+    
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Edit Stok".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if baca.empty:
+        print("Tidak ada barang dalam toko ini!")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("List barang:")
+    for index, row in baca.iterrows():
+        barang = row["barang"]
+        harga = row["harga"]
+        stok = row["stok"]
+        print(f"{index + 1}. {barang} | harga = {harga} | stok = {stok}")
+        
+    kondisi = True
+    
+    print()
+    
+    while kondisi:
+        try:
+            index_ubah = int(input("Ubah item nomor : "))
+            
+            if 1 <= index_ubah <= len(baca):
+                kondisi = False
+            else:
+                print("Masukkan nomor barang yang sudah ada di atas!")
+        except:
+            print("Masukkan input yang benar!")
+    
+    barang_dipilih = baca.iloc[index_ubah-1]
+    print(f"\nBarang yang dipilih: {barang_dipilih['barang']} | stok saat ini = {barang_dipilih['stok']}\n")
+    
+    kondisi2 = True
+    
+    while kondisi2:
+        try:
+            stok_baru = int(input("Masukkan stok baru : "))
+            
+            kondisi2 = False
+        except:
+            print("Masukkan input berupa angka!")
+            
+    baca.at[index_ubah-1, "stok"] = stok_baru
+    baca.to_csv(file_barang, index=False)
+    
+    print(f"\nStok barang '{barang_dipilih['barang']}' berhasil diubah menjadi {stok_baru}.")
+    
+    i = input("\nTekan enter untuk kembali")
+      
 #PROGRAM UTAMA
 def main():
+    os.system('cls')
     
     cek_data()
     
@@ -421,20 +684,21 @@ def main():
             if pilihan == "1":
                 register()
                 kondisi2 = False
-                pilihan2 = input("\n(Y) untuk kembali | (enter) untuk keluar : ").lower()
+                os.system('cls')
+                '''pilihan2 = input("\n(Y) untuk kembali | (enter) untuk keluar : ").lower()
                 if pilihan2 == "y":
                     os.system("cls")
                 else:
-                    kondisi = False
+                    kondisi = False'''
             elif pilihan == "2":
                 login()
                 kondisi2 = False
-                pilihan2 = input("\n(Y) untuk kembali | (enter) untuk keluar : ").lower()
+                os.system('cls')
+                '''pilihan2 = input("\n(Y) untuk kembali | (enter) untuk keluar : ").lower()
                 if pilihan2 == "y":
                     os.system("cls")
                 else:
-                    kondisi = False
-                
+                    kondisi = False'''
             elif pilihan == "3":
                 kondisi = False
                 kondisi2 = False
