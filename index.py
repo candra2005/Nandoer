@@ -268,334 +268,338 @@ def menu_admin(user):
             else:
                 print("Masukkan input yang benar!")
 
-    def id_users(tipe):
-        try:
-            with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                reader = csv.reader(file)
-                data = list(reader)
+def id_users(tipe):
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)
 
-                tipe_data = [row for row in data if len(row) > 2 and row[2] == tipe]
+            tipe_data = [row for row in data if len(row) > 2 and row[2] == tipe]
 
-                return len(tipe_data) + 1
-        except FileNotFoundError:
-            return 1   
+            return len(tipe_data) + 1
+    except FileNotFoundError:
+        return 1   
 
-    # Fungsi untuk menambahkan data pembeli atau penjual
-    def edit_akun_seller():
-        pilih = True
-    
-        while pilih:
-            os.system('cls')
-            
-            print("╔" + "═"*48 + "╗")
-            print("║" + "Menu Edit Akun Seller".center(48) + "║")
-            print("╠" + "═"*48 + "╣")
-            print("║" + user.center(48) + "║")
-            print("╚" + "═"*48 + "╝")
-            
-            print("\n1. Tambah akun seller\n2. Edit akun seller\n3. Lihat akun seller\n4. Hapus akun seller\n5. Keluar menu akun seller")
-            
-            pilih2 = True
-            
-            while pilih2:
-                pilihan = input("\nGunakan menu nomor : ")
-                
-                if pilihan == "1":
-                    tambah_akun_seller()
-                    pilih2 = False
-                elif pilihan == "2":
-                    ubah_akun_seller()
-                    pilih2 = False
-                elif pilihan == "3":
-                    lihat_data_seller()
-                    pilih2 = False
-                elif pilihan == "4":
-                    hapus_data_seller()
-                    pilih2 = False
-                elif pilihan == "5":
-                    pilih2 = False
-                    pilih = False
-                else:
-                    print("Masukkan input yang benar!")
+# FITUR EDIT AKUN SELLER
+def edit_akun_seller():
+    pilih = True
 
-        def tambah_akun_seller():
-            nama = input("Masukkan Nama: ")
-            tipe = input("Masukkan Tipe (Pembeli/Penjual): ").capitalize()
-            if tipe not in ["Penjual"]:
-                print("Tipe yang dipilih tidak sesuai.")
-                return
-            id = id_users(tipe)
-            email = input("Masukkan email: ")
-
-            with open(FILE_USER, mode='a', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerow([id, nama, tipe, email])
-
-            print(f"Data {tipe} dengan ID {id} berhasil ditambahkan.")
-
-        def ubah_akun_seller():
-            try:
-                with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                    reader = csv.reader(file)
-                    data = list(reader)
-
-                if len(data) <= 1:
-                    print("Belum ada data yang tersimpan.")
-                    return
-
-                tipe = "Penjual".capitalize()
-                if tipe not in ["Penjual"]:
-                    print("Tipe yang dipilih tidak sesuai.")
-                    return
-                id_edit = input("Masukkan ID data yang ingin diedit: ")
-
-                # Cari data yang sesuai
-                for i, row in enumerate(data[1:], start=1):
-                    if row[2] == tipe and row[0] == id_edit:
-                        print(f"Data saat ini: Nama: {row[1]}, Kontak: {row[3]}")
-                        nama_baru = input("Masukkan Nama baru (tekan Enter untuk tidak mengubah): ")
-                        kontak_baru = input("Masukkan Kontak baru (tekan Enter untuk tidak mengubah): ")
-
-                        # Perbarui data
-                        if nama_baru.strip():
-                            row[1] = nama_baru
-                        if kontak_baru.strip():
-                            row[3] = kontak_baru
-
-                        # Tulis ulang data ke file CSV
-                        with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
-                            writer = csv.writer(file)
-                            writer.writerows(data)
-
-                        print(f"Data dengan ID {id_edit} berhasil diperbarui.")
-                        return
-
-                print(f"Data dengan ID {id_edit} dan tipe {tipe} tidak ditemukan.")
-            except FileNotFoundError:
-                print("Belum ada file data. Tambahkan data terlebih dahulu.")
-
+    while pilih:
+        os.system('cls')
         
-        def lihat_data_seller():
-            tipe = "Penjual".capitalize()
-            if tipe not in ["Penjual"]:
-                print("Tipe yang dipilih tidak sesuai.")
-                return
-
-            try:
-                with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                    reader = csv.reader(file)
-                    data = list(reader)
-                    if len(data) <= 1:
-                        print("Belum ada data yang tersimpan.")
-                        return
-
-                    print(f"\nData {tipe}:")
-                    print(f"{'ID':<10}{'Nama':<20}{'Kontak':<20}")
-                    print("-" * 50)
-                    for row in data[1:]:
-                        if row[2] == tipe:
-                            print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}")
-            except FileNotFoundError:
-                print("Belum ada file data. Tambahkan data terlebih dahulu.")
+        print("╔" + "═"*48 + "╗")
+        print("║" + "Menu Edit Akun Seller".center(48) + "║")
+        print("╚" + "═"*48 + "╝")
         
-        def hapus_data_seller():
-            tipe = "Penjual".capitalize()
-            if tipe not in ["Penjual"]:
-                print("Tipe yang dipilih tidak sesuai.")
-                return
+        print("\n1. Tambah akun seller\n2. Edit akun seller\n3. Lihat akun seller\n4. Hapus akun seller\n5. Keluar menu akun seller")
+        
+        pilih2 = True
+        
+        while pilih2:
+            pilihan = input("\nGunakan menu nomor : ")
             
-            try:
-                with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                    reader = csv.reader(file)
-                    data = list(reader)
+            if pilihan == "1":
+                tambah_akun_seller()
+                pilih2 = False
+            elif pilihan == "2":
+                ubah_akun_seller()
+                pilih2 = False
+            elif pilihan == "3":
+                lihat_data_seller()
+                pilih2 = False
+            elif pilihan == "4":
+                hapus_data_seller()
+                pilih2 = False
+            elif pilihan == "5":
+                pilih2 = False
+                pilih = False
+            else:
+                print("Masukkan input yang benar!")
 
-                if len(data) <= 1:
-                    print("Belum ada data yang tersimpan.")
-                    return
+# FITUR LEBIH LENGKAP
+def tambah_akun_seller():
+    nama = input("Masukkan Nama: ")
+    tipe = "Penjual".capitalize()
+    id = id_users(tipe)
+    email = input("Masukkan email: ")
+    password = input("Masukkan password: ")
 
-                print(f"\nData {tipe}:")
-                print(f"{'ID':<10}{'Nama':<20}{'Tipe':<10}{'Kontak':<20}")
-                print("-" * 60)
-                for row in data[1:]:
-                    if row[2] == tipe:
-                            print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}")
+    with open(FILE_USER, mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow([id, nama, tipe, email, password])
 
-                id_hapus = input("\nMasukkan ID data yang ingin dihapus: ")
+    print(f"Data {tipe} dengan ID {id} berhasil ditambahkan.")
 
-                # Filter data, menyimpan hanya data yang ID-nya tidak cocok
-                new_data = [row for row in data if row[0] != id_hapus]
+def ubah_akun_seller():
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)
 
-                if len(new_data) == len(data):
-                    print(f"Data dengan ID {id_hapus} tidak ditemukan.")
-                    return
+        if len(data) <= 1:
+            print("Belum ada data yang tersimpan.")
+            return
 
+        tipe = "Penjual".capitalize()
+        id_edit = input("Masukkan ID data yang ingin diedit: ")
+
+        # Cari data yang sesuai
+        for i, row in enumerate(data[1:], start=1):
+            if row[2] == tipe and row[0] == id_edit:
+                print(f"Data saat ini: Nama: {row[1]}, Email: {row[3]}")
+                nama_baru = input("Masukkan Nama baru (tekan Enter untuk tidak mengubah): ")
+                email_baru = input("Masukkan Email baru (tekan Enter untuk tidak mengubah): ")
+                password_baru = input("Masukkan Password baru (tekan Enter untuk tidak mengubah): ")
+
+                # Perbarui data
+                if nama_baru.strip():
+                    row[1] = nama_baru
+                if email_baru.strip():
+                    row[3] = email_baru
+                if password_baru.strip():
+                    row[4] = password_baru
+
+                # Tulis ulang data ke file CSV
                 with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
                     writer = csv.writer(file)
-                    writer.writerows(new_data)
+                    writer.writerows(data)
 
-                print(f"Data dengan ID {id_hapus} berhasil dihapus.")
+                print(f"Data dengan ID {id_edit} berhasil diperbarui.")
+                return
 
-            except FileNotFoundError:
-                print("Belum ada file data. Tambahkan data terlebih dahulu.")
-        
-    def edit_akun_buyer():
-        pilih = True
+        print(f"Data dengan ID {id_edit} dan tipe {tipe} tidak ditemukan.")
+    except FileNotFoundError:
+        print("Belum ada file data. Tambahkan data terlebih dahulu.")
+
+
+def lihat_data_seller():
+    tipe = "Penjual".capitalize()
     
-        while pilih:
-            os.system('cls')
-            
-            print("╔" + "═"*48 + "╗")
-            print("║" + "Menu Edit Akun Buyer".center(48) + "║")
-            print("╠" + "═"*48 + "╣")
-            print("║" + user.center(48) + "║")
-            print("╚" + "═"*48 + "╝")
-            
-            print("\n1. Tambah akun buyer\n2. Edit akun buyer\n3. Lihat akun buyer\n4. Hapus akun buyer\n5. Keluar menu akun buyer")
-            
-            pilih2 = True
-            
-            while pilih2:
-                pilihan = input("\nGunakan menu nomor : ")
-                
-                if pilihan == "1":
-                    tambah_akun_buyer()
-                    pilih2 = False
-                elif pilihan == "2":
-                    ubah_akun_buyer()
-                    pilih2 = False
-                elif pilihan == "3":
-                    lihat_data_buyer()
-                    pilih2 = False
-                elif pilihan == "4":
-                    hapus_data_buyer()
-                    pilih2 = False
-                elif pilihan == "5":
-                    pilih2 = False
-                    pilih = False
-                else:
-                    print("Masukkan input yang benar!")
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)  
 
-        def tambah_akun_buyer():
-            nama = input("Masukkan Nama: ")
-            tipe = "Pembeli".capitalize()
-            if tipe not in ["Pembeli"]:
-                print("Tipe yang dipilih tidak sesuai.")
+            if len(data) <= 1:  
+                print("Belum ada data yang tersimpan.")
+                input("\nTekan Enter untuk kembali...")
                 return
-            id = id_users(tipe)
-            email = input("Masukkan email: ")
 
-            with open(FILE_USER, mode='a', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerow([id, nama, tipe, email])
+            print(f"\nData {tipe}:")
+            print(f"{'ID':<10}{'Nama':<20}{'Email':<20}{'Password':<20}")
+            print("-" * 70)
 
-            print(f"Data {tipe} dengan ID {id} berhasil ditambahkan.")
+            found = False
+            for row in data[1:]:  
+                if len(row) >= 5 and row[2] == tipe: 
+                    print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}{row[4]:<20}")
+                    found = True
 
-        def ubah_akun_buyer():
-            try:
-                with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                    reader = csv.reader(file)
-                    data = list(reader)
+            if not found:
+                print(f"Tidak ada data dengan tipe {tipe.lower()} yang tersimpan.")
+        input("\nTekan Enter untuk kembali ke menu...")
 
-                if len(data) <= 1:
-                    print("Belum ada data yang tersimpan.")
-                    return
+    except FileNotFoundError:
+        print("Belum ada file data. Tambahkan data terlebih dahulu.")
+        input("\nTekan Enter untuk kembali ke menu...")
 
-                tipe = "Pembeli".capitalize()
-                if tipe not in ["Pembeli"]:
-                    print("Tipe yang dipilih tidak sesuai.")
-                    return
-                id_edit = input("Masukkan ID data yang ingin diedit: ")
+def hapus_data_seller():
+    tipe = "Penjual".capitalize()
+    
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)
 
-                # Cari data yang sesuai
-                for i, row in enumerate(data[1:], start=1):
-                    if row[2] == tipe and row[0] == id_edit:
-                        print(f"Data saat ini: Nama: {row[1]}, Kontak: {row[3]}")
-                        nama_baru = input("Masukkan Nama baru (tekan Enter untuk tidak mengubah): ")
-                        kontak_baru = input("Masukkan Kontak baru (tekan Enter untuk tidak mengubah): ")
+        if len(data) <= 1:
+            print("Belum ada data yang tersimpan.")
+            return
 
-                        # Perbarui data
-                        if nama_baru.strip():
-                            row[1] = nama_baru
-                        if kontak_baru.strip():
-                            row[3] = kontak_baru
+        print(f"\nData {tipe}:")
+        print(f"{'ID':<10}{'Nama':<20}{'Email':<20}{'Password':<20}")
+        print("-" * 70)
+        for row in data[1:]:
+            if len(row) >= 5 and row[2] == tipe: 
+                    print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}{row[4]:<20}")
 
-                        # Tulis ulang data ke file CSV
-                        with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
-                            writer = csv.writer(file)
-                            writer.writerows(data)
+        id_hapus = input("\nMasukkan ID data yang ingin dihapus: ")
 
-                        print(f"Data dengan ID {id_edit} berhasil diperbarui.")
-                        return
+        # Filter data, menyimpan hanya data yang ID-nya tidak cocok
+        new_data = [row for row in data if row[0] != id_hapus]
 
-                print(f"Data dengan ID {id_edit} dan tipe {tipe} tidak ditemukan.")
-            except FileNotFoundError:
-                print("Belum ada file data. Tambahkan data terlebih dahulu.")
+        if len(new_data) == len(data):
+            print(f"Data dengan ID {id_hapus} tidak ditemukan.")
+            return
 
+        with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerows(new_data)
+
+        print(f"Data dengan ID {id_hapus} berhasil dihapus.")
+
+    except FileNotFoundError:
+        print("Belum ada file data. Tambahkan data terlebih dahulu.")
+    
+# FITUR EDIT AKUN BUYER 
+def edit_akun_buyer():
+    pilih = True
+
+    while pilih:
+        os.system('cls')
         
-        def lihat_data_buyer():
-            tipe = "Pembeli".capitalize()
-            if tipe not in ["Pembeli"]:
-                print("Tipe yang dipilih tidak sesuai.")
-                return
-
-            try:
-                with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                    reader = csv.reader(file)
-                    data = list(reader)
-                    if len(data) <= 1:
-                        print("Belum ada data yang tersimpan.")
-                        return
-
-                    print(f"\nData {tipe}:")
-                    print(f"{'ID':<10}{'Nama':<20}{'Kontak':<20}")
-                    print("-" * 50)
-                    for row in data[1:]:
-                        if row[2] == tipe:
-                            print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}")
-            except FileNotFoundError:
-                print("Belum ada file data. Tambahkan data terlebih dahulu.")
+        print("╔" + "═"*48 + "╗")
+        print("║" + "Menu Edit Akun Buyer".center(48) + "║")
+        print("╚" + "═"*48 + "╝")
         
-        def hapus_data_buyer():
-            tipe = "Pembeli".capitalize()
-            if tipe not in ["Pembeli"]:
-                print("Tipe yang dipilih tidak sesuai.")
-                return
+        print("\n1. Tambah akun buyer\n2. Edit akun buyer\n3. Lihat akun buyer\n4. Hapus akun buyer\n5. Keluar menu akun buyer")
+        
+        pilih2 = True
+        
+        while pilih2:
+            pilihan = input("\nGunakan menu nomor : ")
             
-            try:
-                with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-                    reader = csv.reader(file)
-                    data = list(reader)
+            if pilihan == "1":
+                tambah_akun_buyer()
+                pilih2 = False
+            elif pilihan == "2":
+                ubah_akun_buyer()
+                pilih2 = False
+            elif pilihan == "3":
+                lihat_data_buyer()
+                pilih2 = False
+            elif pilihan == "4":
+                hapus_data_buyer()
+                pilih2 = False
+            elif pilihan == "5":
+                pilih2 = False
+                pilih = False
+            else:
+                print("Masukkan input yang benar!")
 
-                if len(data) <= 1:
-                    print("Belum ada data yang tersimpan.")
-                    return
+# FITUR LEBIH LENGKAP
+def tambah_akun_buyer():
+    nama = input("Masukkan Nama: ")
+    tipe = "Pembeli".capitalize()
+    id = id_users(tipe)
+    email = input("Masukkan email: ")
+    password = input("Masukkan password: ")
 
-                print(f"\nData {tipe}:")
-                print(f"{'ID':<10}{'Nama':<20}{'Tipe':<10}{'Kontak':<20}")
-                print("-" * 60)
-                for row in data[1:]:
-                    if row[2] == tipe:
-                            print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}")
+    with open(FILE_USER, mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow([id, nama, tipe, email, password])
 
-                id_hapus = input("\nMasukkan ID data yang ingin dihapus: ")
+    print(f"Data {tipe} dengan ID {id} berhasil ditambahkan.")
 
-                # Filter data, menyimpan hanya data yang ID-nya tidak cocok
-                new_data = [row for row in data if row[0] != id_hapus]
+def ubah_akun_buyer():
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)
 
-                if len(new_data) == len(data):
-                    print(f"Data dengan ID {id_hapus} tidak ditemukan.")
-                    return
+        if len(data) <= 1:
+            print("Belum ada data yang tersimpan.")
+            return
 
+        tipe = "Pembeli".capitalize()
+        id_edit = input("Masukkan ID data yang ingin diedit: ")
+
+        # Cari data yang sesuai
+        for i, row in enumerate(data[1:], start=1):
+            if row[2] == tipe and row[0] == id_edit:
+                print(f"Data saat ini: Nama: {row[1]}, Kontak: {row[3]}")
+                nama_baru = input("Masukkan Nama baru (tekan Enter untuk tidak mengubah): ")
+                email_baru = input("Masukkan Email baru (tekan Enter untuk tidak mengubah): ")
+                password_baru = input("Masukkan Password baru (tekan Enter untuk tidak mengubah): ")
+
+
+                # Perbarui data
+                if nama_baru.strip():
+                    row[1] = nama_baru
+                if email_baru.strip():
+                    row[3] = email_baru
+                if password_baru.strip():
+                    row[4] = password_baru
+
+                # Tulis ulang data ke file CSV
                 with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
                     writer = csv.writer(file)
-                    writer.writerows(new_data)
+                    writer.writerows(data)
 
-                print(f"Data dengan ID {id_hapus} berhasil dihapus.")
+                print(f"Data dengan ID {id_edit} berhasil diperbarui.")
+                return
 
-            except FileNotFoundError:
-                print("Belum ada file data. Tambahkan data terlebih dahulu.")
+        print(f"Data dengan ID {id_edit} dan tipe {tipe} tidak ditemukan.")
+    except FileNotFoundError:
+        print("Belum ada file data. Tambahkan data terlebih dahulu.")
 
 
+def lihat_data_buyer():
+    tipe = "Pembeli".capitalize()
+
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)  
+
+            if len(data) <= 1:  
+                print("Belum ada data yang tersimpan.")
+                input("\nTekan Enter untuk kembali...")
+                return
+
+            print(f"\nData {tipe}:")
+            print(f"{'ID':<10}{'Nama':<20}{'Email':<20}{'Password':<20}")
+            print("-" * 70)
+
+            found = False
+            for row in data[1:]:  
+                if len(row) >= 5 and row[2] == tipe: 
+                    print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}{row[4]:<20}")
+                    found = True
+
+            if not found:
+                print(f"Tidak ada data dengan tipe {tipe.lower()} yang tersimpan.")
+        input("\nTekan Enter untuk kembali ke menu...")
+
+    except FileNotFoundError:
+        print("Belum ada file data. Tambahkan data terlebih dahulu.")
+        input("\nTekan Enter untuk kembali ke menu...")
+
+def hapus_data_buyer():
+    tipe = "Pembeli".capitalize()
+    
+    try:
+        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+
+        if len(data) <= 1:
+            print("Belum ada data yang tersimpan.")
+            return
+
+        print(f"\nData {tipe}:")
+        print(f"{'ID':<10}{'Nama':<20}{'Email':<20}{'Password':<20}")
+        print("-" * 70)
+        for row in data[1:]:
+            if len(row) >= 5 and row[2] == tipe:
+                    print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}{row[4]:<20}")
+
+        id_hapus = input("\nMasukkan ID data yang ingin dihapus: ")
+
+        # Filter data, menyimpan hanya data yang ID-nya tidak cocok
+        new_data = [row for row in data if row[0] != id_hapus]
+
+        if len(new_data) == len(data):
+            print(f"Data dengan ID {id_hapus} tidak ditemukan.")
+            return
+
+        with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerows(new_data)
+
+        print(f"Data dengan ID {id_hapus} berhasil dihapus.")
+
+    except FileNotFoundError:
+        print("Belum ada file data. Tambahkan data terlebih dahulu.")
     
 def menu_penjual(email):
     baca = pd.read_csv(FILE_USER)
