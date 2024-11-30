@@ -539,6 +539,14 @@ def hapus_akun_seller():
             kembali +=1
             print("Masukkan ID penjual yang valid!")
             
+    tanya = input("\nApakah anda yakin untuk menghapus akun ini (y) : ").lower()
+    
+    if tanya == "y":
+        pass
+    else:
+        i = input("\nTekan enter untuk kembali")
+        return
+
     index_hapus = baca[baca["id"] == id_tanya].index 
     baca.drop(index=index_hapus, inplace=True)
     
@@ -586,127 +594,226 @@ def edit_akun_buyer():
 
 # FITUR LEBIH LENGKAP
 def tambah_akun_buyer():
-    nama = input("Masukkan Nama: ")
-    tipe = "Pembeli".capitalize()
-    email = input("Masukkan email: ")
-    password = input("Masukkan password: ")
-
-    with open(FILE_USER, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow([id, nama, tipe, email, password])
-
-    print(f"Data {tipe} dengan ID {id} berhasil ditambahkan.")
+    os.system("cls")
+        
+    buyer = pd.read_csv(FILE_USER)
+    
+    kondisi = True
+    kondisi2 = True
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Tambah Akun".center(48) + "║")
+    print("║" + "Pembeli".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    username = input("Masukkan username : ")
+    
+    while kondisi:
+        password = input("Masukkan password : ")
+        
+        if len(password) < 1:
+            print("Password harus berisi minimal 1 karakter!")
+        else:
+            kondisi = False
+    
+    while kondisi2:
+        email = input("Masukkan email : ")
+    
+        if email in buyer["email"].values:
+            print("Email sudah digunakan, silahkan gunakan email lain.")
+        if cek_email(email):
+            kondisi2 = False
+        else:
+            print("Masukkan email yang valid!")
+            
+    data_baru = {"username": username, "password": password, "email": email, "role": "buyer", "id": bikin_id(username)}
+    data_baru_df = pd.DataFrame([data_baru])
+    buyer = pd.concat([buyer, data_baru_df], ignore_index=True)
+    buyer.to_csv(FILE_USER, index=False)     
+    
+    print(f"\nTelah menambah {username} sebagai pembeli")
+    
+    i = input("\nKetik enter untuk kembali")
 
 def ubah_akun_buyer():
-    try:
-        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            data = list(reader)
-
-        if len(data) <= 1:
-            print("Belum ada data yang tersimpan.")
-            return
-
-        tipe = "Pembeli".capitalize()
-        id_edit = input("Masukkan ID data yang ingin diedit: ")
-
-        # Cari data yang sesuai
-        for i, row in enumerate(data[1:], start=1):
-            if row[2] == tipe and row[0] == id_edit:
-                print(f"Data saat ini: Nama: {row[1]}, Kontak: {row[3]}")
-                nama_baru = input("Masukkan Nama baru (tekan Enter untuk tidak mengubah): ")
-                email_baru = input("Masukkan Email baru (tekan Enter untuk tidak mengubah): ")
-                password_baru = input("Masukkan Password baru (tekan Enter untuk tidak mengubah): ")
-
-
-                # Perbarui data
-                if nama_baru.strip():
-                    row[1] = nama_baru
-                if email_baru.strip():
-                    row[3] = email_baru
-                if password_baru.strip():
-                    row[4] = password_baru
-
-                # Tulis ulang data ke file CSV
-                with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
-                    writer = csv.writer(file)
-                    writer.writerows(data)
-
-                print(f"Data dengan ID {id_edit} berhasil diperbarui.")
+    baca = pd.read_csv(FILE_USER)
+    buyer = baca[baca['role'] == 'buyer']
+    
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Edit Akun".center(48) + "║")
+    print("║" + "Pembeli".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if buyer.empty:
+        print("Tidak ada akun pembeli yang terdaftar")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("═"*82)
+    print(f"{"Index":<7} | {'Username':<15} | {'Email':<25} | {"Password":<15} | {"ID":<10}")
+    print("═"*82)
+    
+    for index, row in buyer.iterrows():
+        print(f"{index + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}")
+    
+    print("═"*82)
+    print()
+    
+    kondisi = True
+    kembali = 0
+    kondisi2 = True
+    kondisi3 = True
+        
+    while kondisi:
+        try:
+            id_tanya = int(input("Ubah user ID : "))
+            
+            if id_tanya not in buyer['id'].values:
+                if kembali == 2:
+                    i = input("\nTekan enter untuk kembali")
+                    return
+                kembali +=1
+                print("Masukkan ID pembeli yang valid!")
+            else:
+                kondisi = False
+        except:
+            if kembali == 2:
+                i = input("\nTekan enter untuk kembali")
                 return
-
-        print(f"Data dengan ID {id_edit} dan tipe {tipe} tidak ditemukan.")
-    except FileNotFoundError:
-        print("Belum ada file data. Tambahkan data terlebih dahulu.")
-
+            kembali +=1
+            print("Masukkan ID pembeli yang valid!")
+        
+    username = input("\nMasukkan nama baru : ")
+    
+    while kondisi2:
+        password = input("Masukkan password baru : ")
+        
+        if len(password) < 1:
+            print("Password harus berisi minimal 1 karakter!")
+        else:
+            kondisi2 = False
+    
+    while kondisi3:
+        email = input("Masukkan email baru : ")
+    
+        if email in buyer["email"].values:
+            print("Email sudah digunakan, silahkan gunakan email lain.")
+        if cek_email(email):
+            kondisi3 = False
+        else:
+            print("Masukkan email yang valid!")
+            
+    baca["password"] = baca["password"].astype(str)        
+    baca.loc[baca["id"] == id_tanya, "username"] = username
+    baca.loc[baca["id"] == id_tanya, "password"] = str(password)
+    baca.loc[baca["id"] == id_tanya, "email"] = email
+    
+    baca.to_csv(FILE_USER, index=False)
+    
+    print(f"\nTelah mengubah profil pengguna #{id_tanya}")
+    
+    i = input("\nKetik enter untuk kembali")
 
 def lihat_akun_buyer():
-    tipe = "Pembeli".capitalize()
-
-    try:
-        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            data = list(reader)  
-
-            if len(data) <= 1:  
-                print("Belum ada data yang tersimpan.")
-                input("\nTekan Enter untuk kembali...")
-                return
-
-            print(f"\nData {tipe}:")
-            print(f"{'ID':<10}{'Nama':<20}{'Email':<20}{'Password':<20}")
-            print("-" * 70)
-
-            found = False
-            for row in data[1:]:  
-                if len(row) >= 5 and row[2] == tipe: 
-                    print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}{row[4]:<20}")
-                    found = True
-
-            if not found:
-                print(f"Tidak ada data dengan tipe {tipe.lower()} yang tersimpan.")
-        input("\nTekan Enter untuk kembali ke menu...")
-
-    except FileNotFoundError:
-        print("Belum ada file data. Tambahkan data terlebih dahulu.")
-        input("\nTekan Enter untuk kembali ke menu...")
+    baca = pd.read_csv(FILE_USER)
+    buyer = baca[baca['role'] == 'buyer']
+    
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "List Akun".center(48) + "║")
+    print("║" + "Penjual".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if buyer.empty:
+        print("Tidak ada akun pembeli yang terdaftar")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("═"*82)
+    print(f"{"Index":<7} | {'Username':<15} | {'Email':<25} | {"Password":<15} | {"ID":<10}")
+    print("═"*82)
+    
+    for index, row in buyer.iterrows():
+        print(f"{index + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}")
+        
+    print("═"*82)
+        
+    i = input("\nKetik enter untuk kembali")
 
 def hapus_akun_buyer():
-    tipe = "Pembeli".capitalize()
+    baca = pd.read_csv(FILE_USER)
+    buyer = baca[baca['role'] == 'buyer']
     
-    try:
-        with open(FILE_USER, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            data = list(reader)
+    os.system('cls')
+    
+    print("╔" + "═"*48 + "╗")
+    print("║" + "Hapus Akun".center(48) + "║")
+    print("║" + "Pembeli".center(48) + "║")
+    print("╚" + "═"*48 + "╝")
+    print()
+    
+    if buyer.empty:
+        print("Tidak ada akun pembeli yang terdaftar")
+        
+        i = input("\nTekan enter untuk kembali")
+        return
+    
+    print("═"*82)
+    print(f"{"Index":<7} | {'Username':<15} | {'Email':<25} | {"Password":<15} | {"ID":<10}")
+    print("═"*82)
+    
+    for index, row in buyer.iterrows():
+        print(f"{index + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}")
+        
+    print("═"*82)
+    print()
+    
+    kondisi = True
+    kembali = 0
+    
+    while kondisi:
+        try:
+            id_tanya = int(input("Hapus user ID : "))
+            
+            if id_tanya not in buyer['id'].values:
+                if kembali == 2:
+                    i = input("\nTekan enter untuk kembali")
+                    return
+                kembali +=1
+                print("Masukkan ID pembeli yang valid!")
+            else:
+                kondisi = False
+        except:
+            if kembali == 2:
+                i = input("\nTekan enter untuk kembali")
+                return
+            kembali +=1
+            print("Masukkan ID pembeli yang valid!")
+            
+    tanya = input("\nApakah anda yakin untuk menghapus akun ini (y) : ").lower()
+    
+    if tanya == "y":
+        pass
+    else:
+        i = input("\nTekan enter untuk kembali")
+        return
 
-        if len(data) <= 1:
-            print("Belum ada data yang tersimpan.")
-            return
-
-        print(f"\nData {tipe}:")
-        print(f"{'ID':<10}{'Nama':<20}{'Email':<20}{'Password':<20}")
-        print("-" * 70)
-        for row in data[1:]:
-            if len(row) >= 5 and row[2] == tipe:
-                    print(f"{row[0]:<10}{row[1]:<20}{row[3]:<20}{row[4]:<20}")
-
-        id_hapus = input("\nMasukkan ID data yang ingin dihapus: ")
-
-        # Filter data, menyimpan hanya data yang ID-nya tidak cocok
-        new_data = [row for row in data if row[0] != id_hapus]
-
-        if len(new_data) == len(data):
-            print(f"Data dengan ID {id_hapus} tidak ditemukan.")
-            return
-
-        with open(FILE_USER, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerows(new_data)
-
-        print(f"Data dengan ID {id_hapus} berhasil dihapus.")
-
-    except FileNotFoundError:
-        print("Belum ada file data. Tambahkan data terlebih dahulu.")
+    index_hapus = baca[baca["id"] == id_tanya].index 
+    baca.drop(index=index_hapus, inplace=True)
+    
+    baca.to_csv(FILE_USER, index=False)
+    
+    print(f"\nTelah menghapus profil pengguna #{id_tanya}")
+    
+    i = input("\nKetik enter untuk kembali")
     
 def menu_penjual(email):
     baca = pd.read_csv(FILE_USER)
