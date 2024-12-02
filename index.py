@@ -401,10 +401,11 @@ def ubah_akun_seller():
     print(f'{'Index':<7} | {'Username':<15} | {'Email':<25} | {'Password':<15} | {'ID':<10}')
     print('═'*82)
     
-    idx = 0
+    idx = 1
     
     for index, row in seller.iterrows():
-        print(f'{idx + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        print(f'{idx:<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        idx += 1
     
     print('═'*82)
     print()
@@ -486,10 +487,11 @@ def lihat_akun_seller():
     print(f'{'Index':<7} | {'Username':<15} | {'Email':<25} | {'Password':<15} | {'ID':<10}')
     print('═'*82)
     
-    idx = 0
+    idx = 1
     
     for index, row in seller.iterrows():
-        print(f'{idx + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        print(f'{idx:<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        idx += 1
         
     print('═'*82)
         
@@ -517,10 +519,11 @@ def hapus_akun_seller():
     print(f'{'Index':<7} | {'Username':<15} | {'Email':<25} | {'Password':<15} | {'ID':<10}')
     print('═'*82)
     
-    idx = 0
+    idx = 1
     
     for index, row in seller.iterrows():
-        print(f'{idx + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        print(f'{idx:<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        idx += 1
         
     print('═'*82)
     print()
@@ -666,10 +669,11 @@ def ubah_akun_buyer():
     print(f'{'Index':<7} | {'Username':<15} | {'Email':<25} | {'Password':<15} | {'ID':<10}')
     print('═'*82)
     
-    idx = 0
+    idx = 1
     
     for index, row in buyer.iterrows():
-        print(f'{idx + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        print(f'{idx:<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        idx += 1
     
     print('═'*82)
     print()
@@ -751,10 +755,11 @@ def lihat_akun_buyer():
     print(f'{'Index':<7} | {'Username':<15} | {'Email':<25} | {'Password':<15} | {'ID':<10}')
     print('═'*82)
     
-    idx = 0
+    idx = 1
     
     for index, row in buyer.iterrows():
-        print(f'{idx + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        print(f'{idx:<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        idx += 1
         
     print('═'*82)
         
@@ -782,10 +787,11 @@ def hapus_akun_buyer():
     print(f'{'Index':<7} | {'Username':<15} | {'Email':<25} | {'Password':<15} | {'ID':<10}')
     print('═'*82)
     
-    idx = 0
+    idx = 1
     
     for index, row in buyer.iterrows():
-        print(f'{idx + 1 :<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        print(f'{idx:<7} | {row['username']:<15} | {row['email']:<25} | {row['password']:<15} | {row['id']:<10}')
+        idx += 1
         
     print('═'*82)
     print()
